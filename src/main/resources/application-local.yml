@@ -13,6 +13,11 @@ spring:
       hibernate:
         format_sql: true
 
+voyage:
+  jwt:
+    # Local-only default secret (48 bytes). NEVER use this in dev/prod.
+    secret: ${JWT_SECRET:local-dev-secret-change-me-0123456789-abcdef-0123}
+
 logging:
   level:
     org.hibernate.SQL: debug

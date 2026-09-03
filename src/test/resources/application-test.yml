@@ -9,6 +9,12 @@ spring:
     hibernate:
       ddl-auto: none
 
+voyage:
+  jwt:
+    secret: test-secret-change-me-0123456789-abcdef-0123456789
+    access-token-ttl-seconds: 900
+    refresh-token-ttl-seconds: 1209600
+
 logging:
   level:
     org.testcontainers: info
