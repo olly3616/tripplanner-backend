@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: voyage-backend
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+  # All timestamps are stored and exchanged in UTC; clients render in the trip timezone.
+  jackson:
+    default-property-inclusion: non_null
+    time-zone: UTC
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none        # schema is owned by Flyway, never by Hibernate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when_authorized

@@ -1,0 +1,15 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  # Datasource is provided at runtime by the Testcontainers MySQL container
+  # (@ServiceConnection in AbstractIntegrationTest). Flyway runs the real
+  # migrations against that container so tests exercise production SQL.
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+logging:
+  level:
+    org.testcontainers: info
+    com.github.dockerjava: warn
