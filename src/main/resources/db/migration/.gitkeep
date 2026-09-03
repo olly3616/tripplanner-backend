@@ -1,0 +1,2 @@
+# Flyway migrations live here (V1__init.sql, V2__..., ...).
+# Keep this directory tracked even before the first migration is added.
