@@ -24,7 +24,13 @@ public enum ErrorCode {
     // Auth
     EMAIL_DUPLICATED(HttpStatus.CONFLICT, "A001", "이미 사용 중인 이메일입니다."),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "A002", "이메일 또는 비밀번호가 올바르지 않습니다."),
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "A003", "유효하지 않은 토큰입니다.");
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "A003", "유효하지 않은 토큰입니다."),
+
+    // Members & invitations
+    INVITATION_INVALID(HttpStatus.BAD_REQUEST, "M001", "유효하지 않거나 만료된 초대입니다."),
+    INVALID_ROLE(HttpStatus.BAD_REQUEST, "M002", "허용되지 않은 역할입니다."),
+    CANNOT_MODIFY_OWNER(HttpStatus.FORBIDDEN, "M003", "소유자는 변경하거나 제거할 수 없습니다."),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M004", "멤버를 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;

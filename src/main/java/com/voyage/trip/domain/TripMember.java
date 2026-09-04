@@ -60,4 +60,23 @@ public class TripMember extends BaseTimeEntity {
     public boolean isActive() {
         return status == MemberStatus.ACTIVE;
     }
+
+    public boolean isOwner() {
+        return role == TripRole.OWNER;
+    }
+
+    public void changeRole(TripRole role) {
+        this.role = role;
+    }
+
+    public void remove() {
+        this.status = MemberStatus.REMOVED;
+    }
+
+    /** Re-activates a previously removed membership (e.g. re-invited), refreshing role and join time. */
+    public void reactivate(TripRole role) {
+        this.role = role;
+        this.status = MemberStatus.ACTIVE;
+        this.joinedAt = Instant.now();
+    }
 }
