@@ -2,6 +2,7 @@ package com.voyage.global.exception;
 
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,6 +32,13 @@ public class GlobalExceptionHandler {
                 .toList();
         return ResponseEntity.status(ErrorCode.INVALID_INPUT.getStatus())
                 .body(ErrorResponse.of(ErrorCode.INVALID_INPUT, fieldErrors));
+    }
+
+    @ExceptionHandler(OptimisticLockingFailureException.class)
+    public ResponseEntity<ErrorResponse> handleOptimisticLock(OptimisticLockingFailureException e) {
+        // Concurrent modification detected by JPA @Version; ask the client to refetch.
+        return ResponseEntity.status(ErrorCode.CONFLICT.getStatus())
+                .body(ErrorResponse.of(ErrorCode.CONFLICT));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
