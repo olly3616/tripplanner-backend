@@ -4,6 +4,8 @@ import com.voyage.auth.jwt.JwtProperties;
 import com.voyage.auth.security.JwtAccessDeniedHandler;
 import com.voyage.auth.security.JwtAuthenticationEntryPoint;
 import com.voyage.auth.security.JwtAuthenticationFilter;
+import com.voyage.global.idempotency.IdempotencyKeyFilter;
+import com.voyage.global.idempotency.IdempotencyRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +44,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final IdempotencyRecordRepository idempotencyRecordRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -56,7 +59,9 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // Idempotency replay runs after authentication, so the user is known.
+                .addFilterAfter(new IdempotencyKeyFilter(idempotencyRecordRepository), JwtAuthenticationFilter.class);
         return http.build();
     }
 
