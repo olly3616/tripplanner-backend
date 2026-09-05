@@ -34,6 +34,8 @@ class PollServiceTest {
     private VoteRepository voteRepository;
     @Mock
     private com.voyage.trip.service.TripAccessGuard tripAccessGuard;
+    @Mock
+    private org.springframework.context.ApplicationEventPublisher eventPublisher;
     @InjectMocks
     private PollService pollService;
 
