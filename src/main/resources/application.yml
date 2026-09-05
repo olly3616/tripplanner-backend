@@ -22,6 +22,11 @@ spring:
     enabled: true
     baseline-on-migrate: true
 
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+
 voyage:
   jwt:
     # HS256 secret must be at least 32 bytes. Provided via env in dev/prod.

@@ -119,4 +119,8 @@ public class Expense extends BaseTimeEntity {
         this.splits.clear();
         this.splits.addAll(splits);
     }
+
+    public void attachReceipt(String receiptUrl) {
+        this.receiptUrl = receiptUrl;
+    }
 }

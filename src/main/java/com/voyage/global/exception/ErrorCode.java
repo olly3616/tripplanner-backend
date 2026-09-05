@@ -44,7 +44,10 @@ public enum ErrorCode {
 
     // Share links
     SHARE_LINK_INVALID(HttpStatus.NOT_FOUND, "S001", "유효하지 않거나 만료된 공유 링크입니다."),
-    SHARE_PASSWORD_INVALID(HttpStatus.UNAUTHORIZED, "S002", "공유 비밀번호가 필요하거나 올바르지 않습니다.");
+    SHARE_PASSWORD_INVALID(HttpStatus.UNAUTHORIZED, "S002", "공유 비밀번호가 필요하거나 올바르지 않습니다."),
+
+    // File upload
+    INVALID_FILE(HttpStatus.BAD_REQUEST, "F001", "허용되지 않은 파일 형식이거나 크기가 초과되었습니다.");
 
     private final HttpStatus status;
     private final String code;
