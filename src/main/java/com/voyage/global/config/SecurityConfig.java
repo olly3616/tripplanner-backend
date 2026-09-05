@@ -32,6 +32,9 @@ public class SecurityConfig {
             "/api/ping",
             "/api/share/**",     // public read-only trip summary (authorized by token)
             "/ws/**",            // STOMP handshake (message-level auth is a follow-up)
+            "/v3/api-docs/**",   // OpenAPI spec
+            "/swagger-ui/**",    // Swagger UI
+            "/swagger-ui.html",
             "/actuator/health",
             "/actuator/info"
     };
