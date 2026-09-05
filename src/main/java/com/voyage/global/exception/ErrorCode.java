@@ -35,7 +35,12 @@ public enum ErrorCode {
     // Expenses & settlement
     EXPENSE_SPLIT_MISMATCH(HttpStatus.BAD_REQUEST, "E001", "분할 금액의 합이 지출 금액과 일치하지 않습니다."),
     INVALID_EXPENSE(HttpStatus.BAD_REQUEST, "E002", "지출 정보가 올바르지 않습니다."),
-    EXCHANGE_RATE_UNAVAILABLE(HttpStatus.BAD_REQUEST, "E003", "환율 정보를 찾을 수 없습니다.");
+    EXCHANGE_RATE_UNAVAILABLE(HttpStatus.BAD_REQUEST, "E003", "환율 정보를 찾을 수 없습니다."),
+
+    // Polls & votes
+    POLL_CLOSED(HttpStatus.BAD_REQUEST, "P001", "마감된 투표입니다."),
+    INVALID_VOTE(HttpStatus.BAD_REQUEST, "P002", "유효하지 않은 투표 요청입니다."),
+    INVALID_POLL(HttpStatus.BAD_REQUEST, "P003", "투표 정보가 올바르지 않습니다.");
 
     private final HttpStatus status;
     private final String code;
