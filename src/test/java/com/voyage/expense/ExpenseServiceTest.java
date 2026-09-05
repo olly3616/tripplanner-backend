@@ -40,13 +40,15 @@ class ExpenseServiceTest {
     private TripMemberRepository tripMemberRepository;
     @Mock
     private TripAccessGuard tripAccessGuard;
+    @Mock
+    private org.springframework.context.ApplicationEventPublisher eventPublisher;
 
     private ExpenseService expenseService;
 
     @BeforeEach
     void setUp() {
         expenseService = new ExpenseService(expenseRepository, tripRepository, tripMemberRepository,
-                tripAccessGuard, new StubExchangeRateProvider());
+                tripAccessGuard, new StubExchangeRateProvider(), eventPublisher);
     }
 
     private void stubTripAndMembers(String baseCurrency, Long... memberIds) {

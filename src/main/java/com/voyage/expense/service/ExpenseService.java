@@ -16,6 +16,7 @@ import com.voyage.trip.domain.TripMember;
 import com.voyage.trip.domain.TripRole;
 import com.voyage.trip.repository.TripMemberRepository;
 import com.voyage.trip.repository.TripRepository;
+import com.voyage.activity.event.TripActivityEvent;
 import com.voyage.trip.service.TripAccessGuard;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,7 @@ public class ExpenseService {
     private final TripMemberRepository tripMemberRepository;
     private final TripAccessGuard tripAccessGuard;
     private final ExchangeRateProvider exchangeRateProvider;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public List<ExpenseResponse> list(Long userId, Long tripId) {
@@ -52,6 +55,8 @@ public class ExpenseService {
                 tripId, request.payerId(), request.title(), request.amountMinor(), request.currency(),
                 prepared.rate(), prepared.baseAmountMinor(), request.category(), request.splitMethod(),
                 request.spentOn(), request.receiptUrl(), request.note(), prepared.splits()));
+        eventPublisher.publishEvent(new TripActivityEvent(tripId, userId,
+                TripActivityEvent.EXPENSE_CREATED, "EXPENSE", expense.getId(), expense.getTitle()));
         return ExpenseResponse.from(expense);
     }
 
