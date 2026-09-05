@@ -13,7 +13,8 @@
 | 언어 / 런타임 | Java 17 (LTS) |
 | 프레임워크 | Spring Boot 4.1 (Web MVC, Data JPA, Security, Validation, WebSocket) |
 | DB | MySQL 8 |
-| 마이그레이션 | Flyway (V1–V8) |
+| 마이그레이션 | Flyway (V1–V9) |
+| 파일 저장 | 포트&어댑터(로컬 기본 / S3) |
 | 인증 | Spring Security + JWT(JJWT), DB 저장 refresh 토큰(회전) |
 | 실시간 | Spring WebSocket + STOMP |
 | 빌드 | Gradle (Kotlin DSL) + Wrapper |

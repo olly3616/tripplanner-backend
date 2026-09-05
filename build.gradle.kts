@@ -51,6 +51,10 @@ dependencies {
 	// --- API docs (OpenAPI / Swagger UI); 3.x targets Spring Boot 4 ---
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
 
+	// --- Object storage (S3 adapter; active only when voyage.storage.type=s3) ---
+	implementation(platform("software.amazon.awssdk:bom:2.28.29"))
+	implementation("software.amazon.awssdk:s3")
+
 	// --- Lombok ---
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
