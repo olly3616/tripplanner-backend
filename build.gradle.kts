@@ -49,6 +49,9 @@ dependencies {
 	// --- Ops ---
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 
+	// --- API docs (OpenAPI / Swagger UI); 3.x targets Spring Boot 4 ---
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
+
 	// --- DTO mapping ---
 	implementation("org.mapstruct:mapstruct:$mapstructVersion")
 	annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
