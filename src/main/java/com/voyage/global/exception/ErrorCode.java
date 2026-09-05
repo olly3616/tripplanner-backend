@@ -40,7 +40,11 @@ public enum ErrorCode {
     // Polls & votes
     POLL_CLOSED(HttpStatus.BAD_REQUEST, "P001", "마감된 투표입니다."),
     INVALID_VOTE(HttpStatus.BAD_REQUEST, "P002", "유효하지 않은 투표 요청입니다."),
-    INVALID_POLL(HttpStatus.BAD_REQUEST, "P003", "투표 정보가 올바르지 않습니다.");
+    INVALID_POLL(HttpStatus.BAD_REQUEST, "P003", "투표 정보가 올바르지 않습니다."),
+
+    // Share links
+    SHARE_LINK_INVALID(HttpStatus.NOT_FOUND, "S001", "유효하지 않거나 만료된 공유 링크입니다."),
+    SHARE_PASSWORD_INVALID(HttpStatus.UNAUTHORIZED, "S002", "공유 비밀번호가 필요하거나 올바르지 않습니다.");
 
     private final HttpStatus status;
     private final String code;
