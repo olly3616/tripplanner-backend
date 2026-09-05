@@ -42,7 +42,7 @@ public class PollService {
                 .mapToObj(i -> PollOption.of(request.options().get(i), i))
                 .toList();
         Poll poll = pollRepository.save(Poll.create(tripId, userId, request.title(),
-                request.multipleChoice(), request.anonymous(), request.closesAt(), options));
+                request.multipleChoiceOrDefault(), request.anonymousOrDefault(), request.closesAt(), options));
         return toResponse(poll, userId);
     }
 
