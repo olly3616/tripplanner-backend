@@ -10,6 +10,7 @@ import com.voyage.poll.dto.PollResponse;
 import com.voyage.poll.dto.VoteRequest;
 import com.voyage.poll.repository.PollRepository;
 import com.voyage.poll.repository.VoteRepository;
+import com.voyage.activity.event.TripActivityEvent;
 import com.voyage.trip.domain.TripRole;
 import com.voyage.trip.service.TripAccessGuard;
 import java.time.Instant;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,7 @@ public class PollService {
     private final PollRepository pollRepository;
     private final VoteRepository voteRepository;
     private final TripAccessGuard tripAccessGuard;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public PollResponse create(Long userId, Long tripId, CreatePollRequest request) {
@@ -43,6 +46,8 @@ public class PollService {
                 .toList();
         Poll poll = pollRepository.save(Poll.create(tripId, userId, request.title(),
                 request.multipleChoiceOrDefault(), request.anonymousOrDefault(), request.closesAt(), options));
+        eventPublisher.publishEvent(new TripActivityEvent(tripId, userId,
+                TripActivityEvent.POLL_CREATED, "POLL", poll.getId(), poll.getTitle()));
         return toResponse(poll, userId);
     }
 
