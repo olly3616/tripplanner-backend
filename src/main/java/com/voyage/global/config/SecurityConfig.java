@@ -30,6 +30,7 @@ public class SecurityConfig {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/api/auth/**",
             "/api/ping",
+            "/ws/**",            // STOMP handshake (message-level auth is a follow-up)
             "/actuator/health",
             "/actuator/info"
     };
