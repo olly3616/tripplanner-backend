@@ -30,7 +30,12 @@ public enum ErrorCode {
     INVITATION_INVALID(HttpStatus.BAD_REQUEST, "M001", "유효하지 않거나 만료된 초대입니다."),
     INVALID_ROLE(HttpStatus.BAD_REQUEST, "M002", "허용되지 않은 역할입니다."),
     CANNOT_MODIFY_OWNER(HttpStatus.FORBIDDEN, "M003", "소유자는 변경하거나 제거할 수 없습니다."),
-    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M004", "멤버를 찾을 수 없습니다.");
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M004", "멤버를 찾을 수 없습니다."),
+
+    // Expenses & settlement
+    EXPENSE_SPLIT_MISMATCH(HttpStatus.BAD_REQUEST, "E001", "분할 금액의 합이 지출 금액과 일치하지 않습니다."),
+    INVALID_EXPENSE(HttpStatus.BAD_REQUEST, "E002", "지출 정보가 올바르지 않습니다."),
+    EXCHANGE_RATE_UNAVAILABLE(HttpStatus.BAD_REQUEST, "E003", "환율 정보를 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;
