@@ -23,7 +23,6 @@ repositories {
 	mavenCentral()
 }
 
-val mapstructVersion = "1.6.3"
 val testcontainersVersion = "1.20.6"
 
 dependencies {
@@ -52,14 +51,9 @@ dependencies {
 	// --- API docs (OpenAPI / Swagger UI); 3.x targets Spring Boot 4 ---
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
 
-	// --- DTO mapping ---
-	implementation("org.mapstruct:mapstruct:$mapstructVersion")
-	annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
-
-	// --- Lombok (must sit before mapstruct-binding in processor order) ---
+	// --- Lombok ---
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
-	annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 
 	// --- Test ---
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")

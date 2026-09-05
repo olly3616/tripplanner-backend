@@ -17,7 +17,7 @@
 | 인증 | Spring Security + JWT(JJWT), DB 저장 refresh 토큰(회전) |
 | 실시간 | Spring WebSocket + STOMP |
 | 빌드 | Gradle (Kotlin DSL) + Wrapper |
-| DTO 매핑 | 정적 팩토리 / MapStruct(도입) |
+| API 문서 | springdoc-openapi (Swagger UI) |
 | 테스트 | JUnit 5, Mockito, Testcontainers(실제 MySQL) |
 | CI | GitHub Actions |
 

@@ -9,6 +9,7 @@ import com.voyage.auth.jwt.JwtTokenProvider;
 import com.voyage.auth.repository.RefreshTokenRepository;
 import com.voyage.global.exception.BusinessException;
 import com.voyage.global.exception.ErrorCode;
+import com.voyage.global.util.SecureTokens;
 import com.voyage.user.domain.User;
 import com.voyage.user.dto.UserResponse;
 import com.voyage.user.repository.UserRepository;
@@ -55,7 +56,7 @@ public class AuthService {
 
     @Transactional
     public TokenResponse refresh(String rawRefreshToken) {
-        RefreshToken stored = refreshTokenRepository.findByTokenHash(TokenHasher.sha256Hex(rawRefreshToken))
+        RefreshToken stored = refreshTokenRepository.findByTokenHash(SecureTokens.sha256Hex(rawRefreshToken))
                 .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_TOKEN));
         if (!stored.isActive(Instant.now())) {
             throw new BusinessException(ErrorCode.INVALID_TOKEN);
@@ -69,16 +70,16 @@ public class AuthService {
 
     @Transactional
     public void logout(String rawRefreshToken) {
-        refreshTokenRepository.findByTokenHash(TokenHasher.sha256Hex(rawRefreshToken))
+        refreshTokenRepository.findByTokenHash(SecureTokens.sha256Hex(rawRefreshToken))
                 .ifPresent(token -> token.revoke(Instant.now()));
     }
 
     private TokenResponse issueTokens(User user) {
         String accessToken = jwtTokenProvider.createAccessToken(user.getId(), user.getEmail());
-        String rawRefreshToken = RefreshTokenGenerator.generate();
+        String rawRefreshToken = SecureTokens.newToken();
         Instant expiresAt = Instant.now().plusSeconds(jwtProperties.refreshTokenTtlSeconds());
         refreshTokenRepository.save(
-                RefreshToken.issue(user.getId(), TokenHasher.sha256Hex(rawRefreshToken), expiresAt));
+                RefreshToken.issue(user.getId(), SecureTokens.sha256Hex(rawRefreshToken), expiresAt));
         return TokenResponse.of(accessToken, jwtTokenProvider.getAccessTokenTtlSeconds(), rawRefreshToken);
     }
 }
