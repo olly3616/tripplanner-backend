@@ -15,7 +15,7 @@
 | DB | MySQL 8 |
 | 마이그레이션 | Flyway (V1–V9) |
 | 파일 저장 | 포트&어댑터(로컬 기본 / S3) |
-| 인증 | Spring Security + JWT(JJWT), DB 저장 refresh 토큰(회전) |
+| 인증 | Spring Security + JWT(JJWT), refresh 토큰 저장소 포트&어댑터(DB 기본 / Redis) |
 | 실시간 | Spring WebSocket + STOMP |
 | 빌드 | Gradle (Kotlin DSL) + Wrapper |
 | API 문서 | springdoc-openapi (Swagger UI) |
