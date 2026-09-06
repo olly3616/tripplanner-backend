@@ -27,7 +27,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public abstract class AbstractIntegrationTest {
 
     @ServiceConnection
-    static final MySQLContainer<?> MYSQL = new MySQLContainer<>("mysql:8.4");
+    public static final MySQLContainer<?> MYSQL = new MySQLContainer<>("mysql:8.4");
 
     static {
         MYSQL.start();

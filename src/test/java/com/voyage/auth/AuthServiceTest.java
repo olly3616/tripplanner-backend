@@ -13,8 +13,8 @@ import com.voyage.auth.dto.SignupRequest;
 import com.voyage.auth.dto.TokenResponse;
 import com.voyage.auth.jwt.JwtProperties;
 import com.voyage.auth.jwt.JwtTokenProvider;
-import com.voyage.auth.repository.RefreshTokenRepository;
 import com.voyage.auth.service.AuthService;
+import com.voyage.auth.token.RefreshTokenStore;
 import com.voyage.global.exception.BusinessException;
 import com.voyage.global.exception.ErrorCode;
 import com.voyage.user.domain.User;
@@ -34,7 +34,7 @@ class AuthServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private RefreshTokenRepository refreshTokenRepository;
+    private RefreshTokenStore refreshTokenStore;
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
@@ -44,7 +44,7 @@ class AuthServiceTest {
 
     @BeforeEach
     void setUp() {
-        authService = new AuthService(userRepository, refreshTokenRepository, passwordEncoder,
+        authService = new AuthService(userRepository, refreshTokenStore, passwordEncoder,
                 jwtTokenProvider, new JwtProperties("secret", 900, 1_209_600));
     }
 
@@ -106,7 +106,6 @@ class AuthServiceTest {
         when(passwordEncoder.matches("password1", "ENCODED")).thenReturn(true);
         when(jwtTokenProvider.createAccessToken(any(), any())).thenReturn("ACCESS");
         when(jwtTokenProvider.getAccessTokenTtlSeconds()).thenReturn(900L);
-        when(refreshTokenRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         TokenResponse response = authService.login(new LoginRequest("minji@voyage.com", "password1"));
 
@@ -114,6 +113,6 @@ class AuthServiceTest {
         assertEquals("ACCESS", response.accessToken());
         assertEquals(900L, response.accessTokenExpiresIn());
         assertNotNull(response.refreshToken());
-        verify(refreshTokenRepository).save(any());
+        verify(refreshTokenStore).save(any(), any(), any());
     }
 }
