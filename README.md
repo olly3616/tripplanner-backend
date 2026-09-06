@@ -67,6 +67,8 @@ com.voyage
 - **확장 포인트**: 장소 검색·환율·AI는 포트&어댑터로 추상화(현재 stub, 실제 API 어댑터로 교체 가능).
 - **시간**: 서버는 UTC 저장, 클라이언트가 여행 시간대로 표시. **스키마는 Flyway가 소유**(`ddl-auto=none`).
 
+전체 API 명세는 [docs/API.md](docs/API.md), 실행 중 스펙은 `/swagger-ui.html` · `/v3/api-docs`.
+
 ## 주요 API
 
 | 도메인 | 대표 엔드포인트 |
