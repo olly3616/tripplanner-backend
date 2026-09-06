@@ -25,6 +25,7 @@ public enum ErrorCode {
     EMAIL_DUPLICATED(HttpStatus.CONFLICT, "A001", "이미 사용 중인 이메일입니다."),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "A002", "이메일 또는 비밀번호가 올바르지 않습니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "A003", "유효하지 않은 토큰입니다."),
+    GOOGLE_LOGIN_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "A004", "구글 로그인이 구성되지 않았습니다."),
 
     // Members & invitations
     INVITATION_INVALID(HttpStatus.BAD_REQUEST, "M001", "유효하지 않거나 만료된 초대입니다."),

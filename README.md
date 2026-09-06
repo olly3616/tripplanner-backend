@@ -33,7 +33,8 @@
 | 4 | 경비·분할(균등/비율/직접)·다중 통화·정산 알고리즘 | ✅ |
 | 5 | 투표, 알림·활동 피드(이벤트 기반), 실시간(WebSocket) | ✅ |
 | 6 | 공유 페이지, AI 일정 제안(stub) | ✅ |
-| 후속 | 오프라인 동기화, 영수증 S3, springdoc, Redis 전환, 소셜 로그인 | ⏳ |
+| 후속 | springdoc, 오프라인 Idempotency, 영수증 저장(S3 어댑터), Redis 토큰 저장소, Google 로그인 | ✅ |
+| 남은 과제 | 실시간 STOMP E2E, S3 presigned GET, React Native 클라이언트 | ⏳ |
 
 ## 아키텍처
 
@@ -70,7 +71,7 @@ com.voyage
 
 | 도메인 | 대표 엔드포인트 |
 | --- | --- |
-| 인증 | `POST /api/auth/{signup,login,refresh,logout}`, `GET /api/users/me` |
+| 인증 | `POST /api/auth/{signup,login,refresh,logout}`, `POST /api/auth/google`, `GET /api/users/me` |
 | 여행 | `POST/GET /api/trips`, `GET/PATCH/DELETE /api/trips/{id}`, `PATCH /api/trips/{id}/status` |
 | 멤버 | `POST/GET /api/trips/{id}/members`, `POST /api/invitations/accept`, `PATCH/DELETE /api/trips/{id}/members/{userId}` |
 | 일정 | `GET/POST /api/trips/{id}/itinerary`, `PATCH/DELETE /api/itinerary/{itemId}`, `POST /api/itinerary/reorder` |
