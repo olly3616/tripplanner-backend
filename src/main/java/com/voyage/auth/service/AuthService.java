@@ -3,8 +3,6 @@ package com.voyage.auth.service;
 import com.voyage.auth.dto.LoginRequest;
 import com.voyage.auth.dto.SignupRequest;
 import com.voyage.auth.dto.TokenResponse;
-import com.voyage.auth.jwt.JwtProperties;
-import com.voyage.auth.jwt.JwtTokenProvider;
 import com.voyage.auth.token.RefreshTokenStore;
 import com.voyage.global.exception.BusinessException;
 import com.voyage.global.exception.ErrorCode;
@@ -12,7 +10,6 @@ import com.voyage.global.util.SecureTokens;
 import com.voyage.user.domain.User;
 import com.voyage.user.dto.UserResponse;
 import com.voyage.user.repository.UserRepository;
-import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,8 +22,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RefreshTokenStore refreshTokenStore;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final JwtProperties jwtProperties;
+    private final TokenIssuer tokenIssuer;
 
     @Transactional
     public UserResponse signup(SignupRequest request) {
@@ -50,7 +46,7 @@ public class AuthService {
                 || !passwordEncoder.matches(request.password(), user.getPasswordHash())) {
             throw new BusinessException(ErrorCode.INVALID_CREDENTIALS);
         }
-        return issueTokens(user);
+        return tokenIssuer.issue(user);
     }
 
     @Transactional
@@ -62,19 +58,11 @@ public class AuthService {
         refreshTokenStore.revoke(tokenHash);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_TOKEN));
-        return issueTokens(user);
+        return tokenIssuer.issue(user);
     }
 
     @Transactional
     public void logout(String rawRefreshToken) {
         refreshTokenStore.revoke(SecureTokens.sha256Hex(rawRefreshToken));
-    }
-
-    private TokenResponse issueTokens(User user) {
-        String accessToken = jwtTokenProvider.createAccessToken(user.getId(), user.getEmail());
-        String rawRefreshToken = SecureTokens.newToken();
-        refreshTokenStore.save(SecureTokens.sha256Hex(rawRefreshToken), user.getId(),
-                Duration.ofSeconds(jwtProperties.refreshTokenTtlSeconds()));
-        return TokenResponse.of(accessToken, jwtTokenProvider.getAccessTokenTtlSeconds(), rawRefreshToken);
     }
 }
