@@ -11,9 +11,8 @@ import static org.mockito.Mockito.when;
 import com.voyage.auth.dto.LoginRequest;
 import com.voyage.auth.dto.SignupRequest;
 import com.voyage.auth.dto.TokenResponse;
-import com.voyage.auth.jwt.JwtProperties;
-import com.voyage.auth.jwt.JwtTokenProvider;
 import com.voyage.auth.service.AuthService;
+import com.voyage.auth.service.TokenIssuer;
 import com.voyage.auth.token.RefreshTokenStore;
 import com.voyage.global.exception.BusinessException;
 import com.voyage.global.exception.ErrorCode;
@@ -38,14 +37,13 @@ class AuthServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
-    private JwtTokenProvider jwtTokenProvider;
+    private TokenIssuer tokenIssuer;
 
     private AuthService authService;
 
     @BeforeEach
     void setUp() {
-        authService = new AuthService(userRepository, refreshTokenStore, passwordEncoder,
-                jwtTokenProvider, new JwtProperties("secret", 900, 1_209_600));
+        authService = new AuthService(userRepository, refreshTokenStore, passwordEncoder, tokenIssuer);
     }
 
     @Test
@@ -100,19 +98,16 @@ class AuthServiceTest {
     }
 
     @Test
-    void login_success_returnsTokensAndPersistsRefresh() {
+    void login_success_issuesTokens() {
         User user = User.createEmailUser("minji@voyage.com", "ENCODED", "Minji", null, null);
         when(userRepository.findByEmail("minji@voyage.com")).thenReturn(java.util.Optional.of(user));
         when(passwordEncoder.matches("password1", "ENCODED")).thenReturn(true);
-        when(jwtTokenProvider.createAccessToken(any(), any())).thenReturn("ACCESS");
-        when(jwtTokenProvider.getAccessTokenTtlSeconds()).thenReturn(900L);
+        when(tokenIssuer.issue(user)).thenReturn(TokenResponse.of("ACCESS", 900L, "refresh-raw"));
 
         TokenResponse response = authService.login(new LoginRequest("minji@voyage.com", "password1"));
 
-        assertEquals("Bearer", response.tokenType());
         assertEquals("ACCESS", response.accessToken());
-        assertEquals(900L, response.accessTokenExpiresIn());
         assertNotNull(response.refreshToken());
-        verify(refreshTokenStore).save(any(), any(), any());
+        verify(tokenIssuer).issue(user);
     }
 }
